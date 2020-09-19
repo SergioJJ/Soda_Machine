@@ -76,21 +76,34 @@ const int  additiveCalories[number_of_additives] =  {50       ,100            ,2
 
 
 float credit = 0.00;
+string inputString;
 
-class Sale_item () { 
-    public:
-        int     id = sodaOption[int i]; // relates to the position of the snack in the sodaOptions array and its corresponding values
-        string  name;
-        float   price;
-        int     calories;
+class Sale_item {
+public:
+    string  getName() {return name;}
+    void    setName(string name) {this-> name = name;} // using this-> operator as we will create the class before we instantiate it
+    float   getPrice() {return price;}
+    void    setPrice(float price) {this-> price = price;}
+    int     getCalories() {return calories;}
+    void    setCalories(int calories) {this-> calories = calories;} 
+private:
+
+    string  name;
+    float   price;
+    int     calories;
 };
 
 class Soda: public Sale_item {
-    public:
-        name = sodaOption[identifier];
-        price = sodaCalories;
-        bool caffeine = sodaCaffeine[identifier]
-}
+public:
+
+    bool    getCaffeine() {return caffeine;}
+    void    setCaffeine(bool caffeine) {this-> caffeine = caffeine;} 
+    void    SetAll(string, float, int, bool);
+    Soda(string, float, int, bool);
+    ~Soda();
+private:
+    bool caffeine;
+};
 
 // function to print the physical machine the user "sees", including the current selection available
 void printMachine () {
@@ -105,8 +118,32 @@ void printMachine () {
     cout << "\n---------------------------------------------------------------------";
 }
 
+// function to print the current credit balance in machine
 void printCredit () {
-    cout << "\nCredit: $" << credit << "\nPlease insert $5, $1 bills or quarters ($0.25) one at a time." << endl;
+    cout    << "\nCredit: $" << credit << "\nPlease insert $5, $1 bills or quarters ($0.25) one at a time." 
+            << "\nOr enter a number selection to receive details:\n";
+}
+
+bool is_number(const string& s) {
+    return !s.empty() && find_if(s.begin(), s.end(), [](unsigned char c) {return !isdigit(c); }) == s.end();
+}
+
+// function to print
+int determineInput (string inputString) {
+    char found = inputString.at(0);
+    if (found == '$') {
+        cout << "Entered money\n";
+        cout    << found << endl;
+        return 3;
+    }
+    else // need to detect if 
+    {
+        cout << "Entered a selection\n";
+        is_number(inputString);
+        cout << is_number << endl;
+        return 2;
+    }
+
 
 }
 
@@ -114,8 +151,9 @@ int main () {
     cout << "\n\nWelcome to the Soda Machine & Mixer!\nMake a selection to see price and details, or insert money to purchase." << endl;
     printMachine();
     printCredit();
-    
-
+    cin >> inputString;
+    cout << "You entered :" << inputString << "\n";
+    determineInput(inputString);
 
 
 
