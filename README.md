@@ -1,2 +1,2 @@
 # Soda_Machine
- A working project using C++ to learn OOP
+ A WIP project to model a snack machine using C++ to learn OOP
