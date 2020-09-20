@@ -75,9 +75,6 @@ const string additiveOptions[number_of_additives]  = {"Cherry"  ,"Wildberry"    
 const int  additiveCalories[number_of_additives] =  {50       ,100            ,20             ,0          };
 
 
-float credit = 0.00;
-string inputString;
-
 class Sale_item {
 public:
     string  getName() {return name;}
@@ -107,6 +104,7 @@ private:
 
 // function to print the physical machine the user "sees", including the current selection available
 void printMachine () {
+    cout << "\n\nWelcome to the Soda Machine & Mixer!\nMake a selection to see price and details, or insert money to purchase." << endl;
     cout << "---------------------------------------------------------------------\n";
     for (int i = 0; i < 4; i++) {
         cout << "| " << i + 1 << " - " << sodaOptions[i] << "  |";
@@ -119,44 +117,60 @@ void printMachine () {
 }
 
 // function to print the current credit balance in machine
-void printCredit () {
+void printCredit (float credit) {
     cout    << "\nCredit: $" << credit << "\nPlease insert $5, $1 bills or quarters ($0.25) one at a time." 
-            << "\nOr enter a number selection to receive details:\n";
+            << "\nOr enter a number selection to receive details: \n";
 }
 
-bool is_number(const string& s) {
-    return !s.empty() && find_if(s.begin(), s.end(), [](unsigned char c) {return !isdigit(c); }) == s.end();
-}
 
-// function to print
+
+// function to determine if input is money, a selection, or invalid
 int determineInput (string inputString) {
     char found = inputString.at(0);
     if (found == '$') {
-        cout << "Entered money\n";
-        cout    << found << endl;
-        return 3;
+        cout << "Credit added.\n";
+        //cout    << found << endl;
+        return 2;
     }
     else // need to detect if 
     {
-        cout << "Entered a selection\n";
-        is_number(inputString);
-        cout << is_number << endl;
-        return 2;
+        if (isdigit(inputString[0]) >= 1){
+            cout << "Entered a selection.\n";
+            return 1;
+        }
+        else
+        {
+            cout << "Did not enter any money, or made a proper selection. Try again:\n";
+            return 0;
+        }
     }
-
-
 }
 
 int main () {
-    cout << "\n\nWelcome to the Soda Machine & Mixer!\nMake a selection to see price and details, or insert money to purchase." << endl;
-    printMachine();
-    printCredit();
-    cin >> inputString;
-    cout << "You entered :" << inputString << "\n";
-    determineInput(inputString);
+    float credit = 0;
+    int inputType;
+    string inputString;
+    
+    while (true) {
+        printMachine();
+        printCredit(credit);
+        cin >> inputString;
+        cout << "You entered : " << inputString << "\n";
+    
+        inputType = determineInput(inputString);
+
+        // if money is inserted, add to credit
+        if (inputType == 2) {
+            inputString.erase(0,1);
+            credit = credit + stof(inputString);
+        }
+        // if a selection is made, determine if a purchase is made or display info instead
+        else if (inputType == 1) {
+            cout << "selection info goes here!!!!!" << endl;
+
+        }
 
 
-
-
+    }
     return 0;
 }
